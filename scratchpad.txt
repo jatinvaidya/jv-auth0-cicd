@@ -7,4 +7,8 @@
     c. REPLACE ENV SPECIFIC VALUES WITH ## OR @@ MACROS
     d. ADD ENV SPECIFIC LABELS TO CONFIG.JSON
 
-3. 
+3. PREPARE GIT REPO
+    a. Initiatlize a git repo.
+    b. Commit and Push tenant config exported above to a new branch env/dev.
+
+4. 
