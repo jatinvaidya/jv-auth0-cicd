@@ -1,0 +1,10 @@
+1. EXPORT DEV TENANT
+    a0deploy export --config_file jv-dev01_config.json --format yaml --output_folder ./tenant
+
+2. PREPARE HANDLING OF ENV SPECIFIC VALUES
+    a. MANUALLY ADD `ruleConfigs` (for rules) to tenant.yaml
+    b. MANUALLY ADD `options.configuration` (for custom db action scripts) to tenant.yaml
+    c. REPLACE ENV SPECIFIC VALUES WITH ## OR @@ MACROS
+    d. ADD ENV SPECIFIC LABELS TO CONFIG.JSON
+
+3. 

@@ -1,0 +1,303 @@
+rules:
+  - name: rule-check-mongodb-params
+    script: ./rules/rule-check-mongodb-params.js
+    stage: login_success
+    enabled: true
+    order: 1
+rulesConfigs:
+  - key: "MONGO_HOST"
+    value: "@@MONGO_HOST@@"
+  - key: "MONGO_PORT"
+    value: "##MONGO_PORT##"
+  - key: "MONGO_USER"
+    value: "@@MONGO_USER@@"
+  - key: "MONGO_PASS"
+    value: "##MONGO_PASS##"
+hooks: []
+pages:
+  - name: login
+    enabled: true
+    html: ./pages/login.html
+resourceServers:
+  - name: business-api01
+    identifier: '@@BUSINESS_API_IDENTIFIER@@'
+    allow_offline_access: false
+    scopes:
+      - value: 'read:data'
+        description: read your data
+      - value: 'write:data'
+        description: write your data
+    signing_alg: RS256
+    skip_consent_for_verifiable_first_party_clients: true
+    token_lifetime: 86400
+    token_lifetime_for_web: 7200
+clients:
+  - name: Default App
+    callbacks: []
+    cross_origin_auth: false
+    custom_login_page_on: true
+    grant_types:
+      - authorization_code
+      - implicit
+      - refresh_token
+      - client_credentials
+    is_first_party: true
+    is_token_endpoint_ip_header_trusted: false
+    jwt_configuration:
+      alg: RS256
+      lifetime_in_seconds: 36000
+      secret_encoded: false
+    oidc_conformant: true
+    refresh_token:
+      expiration_type: non-expiring
+      idle_token_lifetime: 1296000
+      infinite_idle_token_lifetime: true
+      infinite_token_lifetime: true
+      leeway: 0
+      token_lifetime: 2592000
+      rotation_type: non-rotating
+    sso_disabled: false
+  - name: business-api01 (Test Application)
+    app_type: non_interactive
+    cross_origin_auth: false
+    custom_login_page_on: true
+    grant_types:
+      - client_credentials
+    is_first_party: true
+    is_token_endpoint_ip_header_trusted: false
+    jwt_configuration:
+      alg: RS256
+      lifetime_in_seconds: 36000
+      secret_encoded: false
+    oidc_conformant: true
+    refresh_token:
+      expiration_type: non-expiring
+      leeway: 0
+      infinite_token_lifetime: true
+      infinite_idle_token_lifetime: true
+      token_lifetime: 31557600
+      idle_token_lifetime: 2592000
+      rotation_type: non-rotating
+    sso_disabled: false
+    token_endpoint_auth_method: client_secret_post
+  - name: business-app01
+    allowed_clients: []
+    allowed_logout_urls:
+      - 'https://##APP_HOST##:##APP_PORT##/logout'
+    app_type: regular_web
+    callbacks:
+      - 'https://##APP_HOST##:##APP_PORT##/callback'
+    client_aliases: []
+    cross_origin_auth: false
+    custom_login_page_on: true
+    grant_types:
+      - authorization_code
+      - implicit
+      - refresh_token
+      - client_credentials
+    is_first_party: true
+    is_token_endpoint_ip_header_trusted: false
+    jwt_configuration:
+      alg: RS256
+      lifetime_in_seconds: 36000
+      secret_encoded: false
+    native_social_login:
+      apple:
+        enabled: false
+      facebook:
+        enabled: false
+    oidc_conformant: true
+    refresh_token:
+      expiration_type: non-expiring
+      leeway: 0
+      infinite_token_lifetime: true
+      infinite_idle_token_lifetime: true
+      token_lifetime: 31557600
+      idle_token_lifetime: 2592000
+      rotation_type: non-rotating
+    sso_disabled: false
+    token_endpoint_auth_method: client_secret_post
+  - name: deploy-cli
+    app_type: non_interactive
+    cross_origin_auth: false
+    custom_login_page_on: true
+    grant_types:
+      - client_credentials
+    is_first_party: true
+    is_token_endpoint_ip_header_trusted: false
+    jwt_configuration:
+      alg: RS256
+      lifetime_in_seconds: 36000
+      secret_encoded: false
+    oidc_conformant: true
+    refresh_token:
+      expiration_type: non-expiring
+      leeway: 0
+      infinite_token_lifetime: true
+      infinite_idle_token_lifetime: true
+      token_lifetime: 31557600
+      idle_token_lifetime: 2592000
+      rotation_type: non-rotating
+    sso_disabled: false
+    token_endpoint_auth_method: client_secret_post
+databases:
+  - name: Username-Password-Authentication
+    strategy: auth0
+    enabled_clients:
+      - business-api01 (Test Application)
+      - business-app01
+      - Default App
+      - deploy-cli
+    is_domain_connection: false
+    options:
+      mfa:
+        active: true
+        return_enroll_settings: true
+      passwordPolicy: good
+      strategy_version: 2
+      brute_force_protection: true
+    realms:
+      - Username-Password-Authentication
+  - name: custom-db
+    strategy: auth0
+    enabled_clients: []
+    is_domain_connection: false
+    options:
+      configuration:
+        SQLSERVER_HOST: "##SQLSERVER_HOST##"
+        SQLSERVER_PORT: "##SQLSERVER_PORT##"
+        SQLSERVER_USER: "##SQLSERVER_USER##"
+        SQLSERVER_PASS: "##SQLSERVER_PASS##"
+      mfa:
+        active: true
+        return_enroll_settings: true
+      import_mode: false
+      customScripts:
+        change_password: ./databases/custom-db/change_password.js
+        create: ./databases/custom-db/create.js
+        delete: ./databases/custom-db/delete.js
+        get_user: ./databases/custom-db/get_user.js
+        login: ./databases/custom-db/login.js
+        verify: ./databases/custom-db/verify.js
+      disable_signup: false
+      passwordPolicy: good
+      password_history:
+        size: 5
+        enable: false
+      strategy_version: 2
+      requires_username: false
+      password_dictionary:
+        enable: false
+        dictionary: []
+      brute_force_protection: true
+      password_no_personal_info:
+        enable: false
+      password_complexity_options:
+        min_length: 8
+      enabledDatabaseCustomization: true
+    realms:
+      - custom-db
+connections:
+  - name: google-oauth2
+    strategy: google-oauth2
+    enabled_clients:
+      - business-api01 (Test Application)
+      - business-app01
+      - Default App
+      - deploy-cli
+    is_domain_connection: false
+    options:
+      email: true
+      scope:
+        - email
+        - profile
+      profile: true
+  - name: saml01
+    strategy: samlp
+    enabled_clients: []
+    is_domain_connection: false
+    options:
+      cert: |
+        -----BEGIN CERTIFICATE-----
+        MIIDBzCCAe+gAwIBAgIJK71Jc5BYoo4iMA0GCSqGSIb3DQEBCwUAMCExHzAdBgNV
+        BAMTFmp2LXNhZmV0eS51cy5hdXRoMC5jb20wHhcNMjEwMjE1MDAzMjQ3WhcNMzQx
+        MDI1MDAzMjQ3WjAhMR8wHQYDVQQDExZqdi1zYWZldHkudXMuYXV0aDAuY29tMIIB
+        IjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwwk6c5mnaKUZDDSQAZwglbke
+        wd5cO4/WPpJv5NPBzZOUovUbz8JOxxmdloFo+gTFTZJt5tl67535G4NFILKb8QMp
+        NoJvUlu3ZCg2O0s7GxueXqVKWjTruoC8ePph92C+rysNwL4GxZitlAlvmXdjVeo9
+        hEk0aMtk+uHqwgRRCtxz0+UJ3pWu45Go+gKi6aas2A7h65GQiLV6IQeH8ny5Wf6c
+        i0NNmn+P0peQOr1WsYVn78S8C13n0eRnnyKId/UqdHRNugmH7l2VAPxD1x0kTMv9
+        p2abMKaaBCyFGdOFm43Qmh6X2HZhU0YCS7MV/V6LrvNh3d8nTY5M5If7YbWIQwID
+        AQABo0IwQDAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBQn9zkFOu0Tdq/2nVcn
+        IAQKYga1LTAOBgNVHQ8BAf8EBAMCAoQwDQYJKoZIhvcNAQELBQADggEBAFiBA1OI
+        OPKKwZWa9pcUmnWpFzMSlRGc/lQE0O5psyDkva9QBKQWYUPLV/+eOLKnq27Jddes
+        5vUwHHH0lD4mvUz5tVMfCf+fVI3EyBOqNbmNq2PUSvMZAkml0ivk5IH/b44JeYsh
+        loRXzLdAiwVxb0ZiM1nCA8D1+Y2rl4+aMHrGy20A7jeCZwfrxL35AcojuvFJAZ1+
+        7StObURx7c77JS5CO1KiarTu5/1UZwXsIUmBSb495nNyPMDDPtH5l+F5lUJf54xI
+        OVGSp71mhVhWwkAQvJrjHWTdZYYZPGas3ts3LtmGp+xL6zXVCRqUyKp60i8LyeQV
+        s6Roo3FIKW6xgJI=
+        -----END CERTIFICATE-----
+      expires: '2034-10-25T00:32:47.000Z'
+      subject:
+        commonName: jv-safety.us.auth0.com
+      fieldsMap: {}
+      signingCert: >-
+        LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCekNDQWUrZ0F3SUJBZ0lKSzcxSmM1QllvbzRpTUEwR0NTcUdTSWIzRFFFQkN3VUFNQ0V4SHpBZEJnTlYKQkFNVEZtcDJMWE5oWm1WMGVTNTFjeTVoZFhSb01DNWpiMjB3SGhjTk1qRXdNakUxTURBek1qUTNXaGNOTXpReApNREkxTURBek1qUTNXakFoTVI4d0hRWURWUVFERXhacWRpMXpZV1psZEhrdWRYTXVZWFYwYURBdVkyOXRNSUlCCklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF3d2s2YzVtbmFLVVpERFNRQVp3Z2xia2UKd2Q1Y080L1dQcEp2NU5QQnpaT1VvdlViejhKT3h4bWRsb0ZvK2dURlRaSnQ1dGw2NzUzNUc0TkZJTEtiOFFNcApOb0p2VWx1M1pDZzJPMHM3R3h1ZVhxVktXalRydW9DOGVQcGg5MkMrcnlzTndMNEd4Wml0bEFsdm1YZGpWZW85CmhFazBhTXRrK3VIcXdnUlJDdHh6MCtVSjNwV3U0NUdvK2dLaTZhYXMyQTdoNjVHUWlMVjZJUWVIOG55NVdmNmMKaTBOTm1uK1AwcGVRT3IxV3NZVm43OFM4QzEzbjBlUm5ueUtJZC9VcWRIUk51Z21IN2wyVkFQeEQxeDBrVE12OQpwMmFiTUthYUJDeUZHZE9GbTQzUW1oNlgySFpoVTBZQ1M3TVYvVjZMcnZOaDNkOG5UWTVNNUlmN1liV0lRd0lECkFRQUJvMEl3UURBUEJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXQkJRbjl6a0ZPdTBUZHEvMm5WY24KSUFRS1lnYTFMVEFPQmdOVkhROEJBZjhFQkFNQ0FvUXdEUVlKS29aSWh2Y05BUUVMQlFBRGdnRUJBRmlCQTFPSQpPUEtLd1pXYTlwY1VtbldwRnpNU2xSR2MvbFFFME81cHN5RGt2YTlRQktRV1lVUExWLytlT0xLbnEyN0pkZGVzCjV2VXdISEgwbEQ0bXZVejV0Vk1mQ2YrZlZJM0V5Qk9xTmJtTnEyUFVTdk1aQWttbDBpdms1SUgvYjQ0SmVZc2gKbG9SWHpMZEFpd1Z4YjBaaU0xbkNBOEQxK1kycmw0K2FNSHJHeTIwQTdqZUNad2ZyeEwzNUFjb2p1dkZKQVoxKwo3U3RPYlVSeDdjNzdKUzVDTzFLaWFyVHU1LzFVWndYc0lVbUJTYjQ5NW5OeVBNRERQdEg1bCtGNWxVSmY1NHhJCk9WR1NwNzFtaFZoV3drQVF2SnJqSFdUZFpZWVpQR2FzM3RzM0x0bUdwK3hMNnpYVkNScVV5S3A2MGk4THllUVYKczZSb28zRklLVzZ4Z0pJPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+      thumbprints:
+        - ec025ebea7c156c4794bd171ccd69da393433034
+      idpinitiated:
+        client_id: !<tag:yaml.org,2002:js/undefined> ''
+      signInEndpoint: 'https://##SAML_IDP_HOST##/signin'
+      digestAlgorithm: ''
+      signOutEndpoint: 'https://##SAML_IDP_HOST##/signout'
+      signSAMLRequest: true
+      signatureAlgorithm: ''
+    show_as_button: false
+tenant:
+  enabled_locales:
+    - en
+  flags:
+    allow_legacy_delegation_grant_types: true
+    allow_legacy_ro_grant_types: true
+    allow_other_legacy_grant_types: true
+    new_universal_login_experience_enabled: false
+    universal_login: false
+    revoke_refresh_token_grant: false
+    disable_clickjack_protection_headers: false
+  universal_login: {}
+emailProvider: {}
+emailTemplates: []
+clientGrants:
+  - client_id: business-api01 (Test Application)
+    audience: '@@BUSINESS_API_IDENTIFIER@@'
+    scope: []
+guardianFactors:
+  - name: duo
+    enabled: false
+  - name: email
+    enabled: false
+  - name: otp
+    enabled: false
+  - name: push-notification
+    enabled: false
+  - name: sms
+    enabled: false
+  - name: webauthn-platform
+    enabled: false
+  - name: webauthn-roaming
+    enabled: false
+guardianFactorProviders: []
+guardianFactorTemplates: []
+guardianPolicies:
+  policies: []
+guardianPhoneFactorSelectedProvider:
+  provider: auth0
+guardianPhoneFactorMessageTypes:
+  message_types: []
+roles: []
+branding: {}
+prompts:
+  universal_login_experience: classic
+migrations:
+  legacy_tls: true
+actions: []
