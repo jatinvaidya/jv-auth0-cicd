@@ -6,11 +6,11 @@ rules:
     order: 1
 rulesConfigs:
   - key: "MONGO_HOST"
-    value: "@@MONGO_HOST@@"
+    value: "##MONGO_HOST##"
   - key: "MONGO_PORT"
     value: "##MONGO_PORT##"
   - key: "MONGO_USER"
-    value: "@@MONGO_USER@@"
+    value: "##MONGO_USER##"
   - key: "MONGO_PASS"
     value: "##MONGO_PASS##"
 hooks: []
@@ -20,7 +20,7 @@ pages:
     html: ./pages/login.html
 resourceServers:
   - name: business-api01
-    identifier: '@@BUSINESS_API_IDENTIFIER@@'
+    identifier: "##BUSINESS_API_IDENTIFIER##"
     allow_offline_access: false
     scopes:
       - value: 'read:data'
@@ -269,7 +269,7 @@ emailProvider: {}
 emailTemplates: []
 clientGrants:
   - client_id: business-api01 (Test Application)
-    audience: '@@BUSINESS_API_IDENTIFIER@@'
+    audience: "##BUSINESS_API_IDENTIFIER##"
     scope: []
 guardianFactors:
   - name: duo
