@@ -9,6 +9,5 @@ function (user, context, callback) {
   console.debug(`MONGO_PORT: ${MONGO_PORT}`);
   // connect to mongo db etc ...
   // ... not relevant here
-  
   return callback(null, user, context);
 }

@@ -1,4 +1,9 @@
 rules:
+  - name: noop-rule
+    script: ./rules/noop-rule.js
+    stage: login_success
+    enabled: true
+    order: 2
   - name: rule-check-mongodb-params
     script: ./rules/rule-check-mongodb-params.js
     stage: login_success
@@ -20,7 +25,7 @@ pages:
     html: ./pages/login.html
 resourceServers:
   - name: business-api01
-    identifier: "https://business.api01.com"
+    identifier: 'https://business.api01.com'
     allow_offline_access: false
     scopes:
       - value: 'read:data'
@@ -160,7 +165,8 @@ databases:
       - Username-Password-Authentication
   - name: custom-db
     strategy: auth0
-    enabled_clients: []
+    enabled_clients:
+      - business-app01
     is_domain_connection: false
     options:
       configuration:
@@ -245,9 +251,9 @@ connections:
         LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCekNDQWUrZ0F3SUJBZ0lKSzcxSmM1QllvbzRpTUEwR0NTcUdTSWIzRFFFQkN3VUFNQ0V4SHpBZEJnTlYKQkFNVEZtcDJMWE5oWm1WMGVTNTFjeTVoZFhSb01DNWpiMjB3SGhjTk1qRXdNakUxTURBek1qUTNXaGNOTXpReApNREkxTURBek1qUTNXakFoTVI4d0hRWURWUVFERXhacWRpMXpZV1psZEhrdWRYTXVZWFYwYURBdVkyOXRNSUlCCklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF3d2s2YzVtbmFLVVpERFNRQVp3Z2xia2UKd2Q1Y080L1dQcEp2NU5QQnpaT1VvdlViejhKT3h4bWRsb0ZvK2dURlRaSnQ1dGw2NzUzNUc0TkZJTEtiOFFNcApOb0p2VWx1M1pDZzJPMHM3R3h1ZVhxVktXalRydW9DOGVQcGg5MkMrcnlzTndMNEd4Wml0bEFsdm1YZGpWZW85CmhFazBhTXRrK3VIcXdnUlJDdHh6MCtVSjNwV3U0NUdvK2dLaTZhYXMyQTdoNjVHUWlMVjZJUWVIOG55NVdmNmMKaTBOTm1uK1AwcGVRT3IxV3NZVm43OFM4QzEzbjBlUm5ueUtJZC9VcWRIUk51Z21IN2wyVkFQeEQxeDBrVE12OQpwMmFiTUthYUJDeUZHZE9GbTQzUW1oNlgySFpoVTBZQ1M3TVYvVjZMcnZOaDNkOG5UWTVNNUlmN1liV0lRd0lECkFRQUJvMEl3UURBUEJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXQkJRbjl6a0ZPdTBUZHEvMm5WY24KSUFRS1lnYTFMVEFPQmdOVkhROEJBZjhFQkFNQ0FvUXdEUVlKS29aSWh2Y05BUUVMQlFBRGdnRUJBRmlCQTFPSQpPUEtLd1pXYTlwY1VtbldwRnpNU2xSR2MvbFFFME81cHN5RGt2YTlRQktRV1lVUExWLytlT0xLbnEyN0pkZGVzCjV2VXdISEgwbEQ0bXZVejV0Vk1mQ2YrZlZJM0V5Qk9xTmJtTnEyUFVTdk1aQWttbDBpdms1SUgvYjQ0SmVZc2gKbG9SWHpMZEFpd1Z4YjBaaU0xbkNBOEQxK1kycmw0K2FNSHJHeTIwQTdqZUNad2ZyeEwzNUFjb2p1dkZKQVoxKwo3U3RPYlVSeDdjNzdKUzVDTzFLaWFyVHU1LzFVWndYc0lVbUJTYjQ5NW5OeVBNRERQdEg1bCtGNWxVSmY1NHhJCk9WR1NwNzFtaFZoV3drQVF2SnJqSFdUZFpZWVpQR2FzM3RzM0x0bUdwK3hMNnpYVkNScVV5S3A2MGk4THllUVYKczZSb28zRklLVzZ4Z0pJPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
       thumbprints:
         - ec025ebea7c156c4794bd171ccd69da393433034
-      signInEndpoint: "https://idp.saml.com/signin"
+      signInEndpoint: 'https://idp.saml.com/signin'
       digestAlgorithm: ''
-      signOutEndpoint: "https://idp.saml.com/signout"
+      signOutEndpoint: 'https://idp.saml.com/signout'
       signSAMLRequest: true
       signatureAlgorithm: ''
     show_as_button: false
@@ -267,7 +273,7 @@ emailProvider: {}
 emailTemplates: []
 clientGrants:
   - client_id: business-api01 (Test Application)
-    audience: "https://business.api01.com"
+    audience: 'https://business.api01.com'
     scope: []
 guardianFactors:
   - name: duo
