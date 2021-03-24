@@ -267,7 +267,7 @@ emailProvider: {}
 emailTemplates: []
 clientGrants:
   - client_id: business-api01 (Test Application)
-    audience: https://business.api01.com"
+    audience: "https://business.api01.com"
     scope: []
 guardianFactors:
   - name: duo
