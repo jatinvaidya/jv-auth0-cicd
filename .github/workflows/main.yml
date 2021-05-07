@@ -61,6 +61,10 @@ jobs:
           SQLSERVER_PORT: ${{ secrets.SQLSERVER_PORT }}
           SQLSERVER_USER: ${{ secrets.SQLSERVER_USER }}
           SUPPORT_URL: ${{ secrets.SUPPORT_URL }}
-          
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+
         # import tenant configuration
         run: a0deploy import --input_file ./tenant/tenant.yaml
