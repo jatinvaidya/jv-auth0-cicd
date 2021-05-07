@@ -276,7 +276,7 @@ emailProvider:
     smtp_port: ##SMTP_PORT##
     smtp_user: ##SMTP_USER##
     smtp_pass: ##SMTP_PASS##
-  default_from_address: info@app01.com
+  default_from_address: info@app02.com
   enabled: true
 emailTemplates:
   - template: verify_email
