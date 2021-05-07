@@ -6,9 +6,7 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the env/dev branch
   push:
-    branches: [env/dev]
-  pull_request:
-    branches: [env/dev]
+    branches: [env/tst]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -22,7 +20,7 @@ jobs:
 
     # this corresponds to the branch that we have mentioned above
     environment:
-      name: "GH_DEV"
+      name: "GH_TST"
 
     # node version
     strategy:
