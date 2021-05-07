@@ -270,7 +270,15 @@ tenant:
     disable_clickjack_protection_headers: false
   universal_login: {}
 emailProvider: {}
-emailTemplates: []
+emailTemplates:
+  - template: verify_email
+    body: ./emailTemplates/verify_email.html
+    enabled: true
+    from: '{{ application.name }} <support@yourcompany.com>'
+    resultUrl: 'https://{{ application.callback_domain }}'
+    subject: Please Verify Your Account
+    syntax: liquid
+    urlLifetimeInSeconds: 432000
 clientGrants:
   - client_id: business-api01 (Test Application)
     audience: 'https://business.api01.com'
@@ -304,4 +312,3 @@ prompts:
   universal_login_experience: classic
 migrations:
   legacy_tls: true
-  
