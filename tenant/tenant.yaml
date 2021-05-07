@@ -269,7 +269,15 @@ tenant:
     revoke_refresh_token_grant: false
     disable_clickjack_protection_headers: false
   universal_login: {}
-emailProvider: {}
+emailProvider:
+  name: smtp
+  credentials:
+    smtp_host: ##SMTP_HOST##
+    smtp_port: ##SMTP_PORT##
+    smtp_user: ##SMTP_USER##
+    smtp_pass: ##SMTP_PASS##
+  default_from_address: info@app01.com
+  enabled: true
 emailTemplates:
   - template: verify_email
     body: ./emailTemplates/verify_email.html
