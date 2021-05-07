@@ -20,7 +20,7 @@ jobs:
 
     # this corresponds to the branch that we have mentioned above
     environment:
-      name: "GH_TST"
+      name: "GH_DEV"
 
     # node version
     strategy:
@@ -65,6 +65,7 @@ jobs:
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
           SMTP_USER: ${{ secrets.SMTP_USER }}
+          DEVELOPER_EMAIL: ${{ secrets.DEVELOPER_EMAIL }}
 
         # import tenant configuration
         run: a0deploy import --input_file ./tenant/tenant.yaml
